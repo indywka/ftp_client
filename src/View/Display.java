@@ -44,7 +44,7 @@ public class Display extends JFrame {
         this.expLocal.addListener(new ListenExpLocal());
         this.expFTP.addListener(new ListenExpFTP());
 
-        this.expLocal.setPath(System.getProperty("user.home"));
+        this.expLocal.setPath("C://Users//User//Desktop//My_computer");
     }
 
     private class ListenExpLocal implements FileExplorerListener {
