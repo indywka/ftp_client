@@ -13,7 +13,6 @@ public class Display extends JFrame {
     private controllerFTP pi = new controllerFTP();
     private Socket sock;
     private ConnectPan conn = new ConnectPan();
-    private FileExplorerLocal expLocal = new FileExplorerLocal();
     private FileExplorerFTP expFTP = new FileExplorerFTP();
 
     public Display() {
@@ -31,7 +30,8 @@ public class Display extends JFrame {
 
         JPanel panTree = new JPanel();
         panTree.setLayout(new BoxLayout(panTree, BoxLayout.X_AXIS));
-        JScrollPane scLocal = new JScrollPane(this.expLocal);
+        FileExplorerLocal expLocal = new FileExplorerLocal("C://Users//User//Desktop");
+        JScrollPane scLocal = new JScrollPane(expLocal);
         JScrollPane scFTP = new JScrollPane(this.expFTP);
         scLocal.setPreferredSize(new Dimension(400, 560));
         scFTP.setPreferredSize(new Dimension(400, 560));
@@ -41,10 +41,9 @@ public class Display extends JFrame {
 
 
         this.conn.addListener(new ListenConnect());
-        this.expLocal.addListener(new ListenExpLocal());
+        expLocal.addListener(new ListenExpLocal());
         this.expFTP.addListener(new ListenExpFTP());
 
-        this.expLocal.setPath("C://Users//User//Desktop//My_computer");
     }
 
     private class ListenExpLocal implements FileExplorerListener {
