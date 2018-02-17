@@ -30,7 +30,7 @@ public class Display extends JFrame {
 
         JPanel panTree = new JPanel();
         panTree.setLayout(new BoxLayout(panTree, BoxLayout.X_AXIS));
-        FileExplorerLocal expLocal = new FileExplorerLocal("C://Users//User//Desktop");
+        FileExplorerLocal expLocal = new FileExplorerLocal();
         JScrollPane scLocal = new JScrollPane(expLocal);
         JScrollPane scFTP = new JScrollPane(this.expFTP);
         scLocal.setPreferredSize(new Dimension(400, 560));

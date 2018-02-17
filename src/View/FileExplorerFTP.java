@@ -32,14 +32,14 @@ public class FileExplorerFTP extends FileExplorer {
     }
 
     @Override
-    protected void selected(int index) {
+    protected void selected(String index) {
     }
 
     @Override
-    protected void delete(int index) {
+    protected void delete(String path) {
     }
 
     @Override
-    protected void info(int index) {
+    protected void info(String index) {
     }
 }
