@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,27 +12,31 @@ public abstract class FileExplorer extends JPanel {
     DefaultListModel<String> model;
     String path = "";
     private List<FileExplorerListener> listeners = new ArrayList<>();
-    private JList<String> list;
     private JPopupMenu menu;
     private int indexPopMenu = -1;
+    JTree tree = new JTree();
+
 
     FileExplorer() {
+
         menu = new JPopupMenu();
+
         setLayout(new BorderLayout());
         model = new DefaultListModel<>();
-        list = new JList<>(this.model);
-        this.list.addMouseListener(new ListenMouse());
-        this.add(this.list);
+        JList<String> list = new JList<>(this.model);
+        list.addMouseListener(new ListenMouse());
+        this.add(list);
+
 
         JMenuItem itemSuppr = new JMenuItem("DELETE");
         itemSuppr.addActionListener(arg0 -> delete(FileExplorer.this.indexPopMenu));
         this.menu.add(itemSuppr);
 
         JMenuItem itemInfo = new JMenuItem("INFO");
-        itemInfo.addActionListener(arg0 -> info(FileExplorer.this.indexPopMenu));
+        itemInfo.addActionListener(arg0 -> info(path));
         this.menu.add(itemInfo);
 
-        this.list.addMouseListener(new ListenMouse());
+        tree.addMouseListener(new ListenMouse());
     }
 
     String getCurrentPath() {
@@ -48,7 +53,7 @@ public abstract class FileExplorer extends JPanel {
 
     protected abstract void delete(int index);
 
-    protected abstract void info(int index);
+    protected abstract void info(String path);
 
     void addListener(FileExplorerListener listener) {
         this.listeners.add(listener);
@@ -62,25 +67,19 @@ public abstract class FileExplorer extends JPanel {
     // 1) если нажали два раза ЛКМ, то происходит переход , иначе ничего
     // 2) при нажитии ПКМ открыается menu
     private class ListenMouse extends MouseAdapter {
-        private int lastIndex = -1;
-        private int nbClick = -1;
 
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                int index = FileExplorer.this.list.locationToIndex(e.getPoint());
-                if (index != this.lastIndex) this.nbClick = 0;
-                this.lastIndex = index;
-                this.nbClick++;
-                if (this.nbClick == 2) {
-                    this.nbClick = 0;
-                    FileExplorer.this.selected(index);
+                TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+                if (e.getClickCount() == 1) {
+                    System.out.println(selPath.getLastPathComponent());
+                } else if (e.getClickCount() == 2) {
+                    System.out.println("Double" + selPath.getLastPathComponent());
                 }
-            } else {
-                this.lastIndex = -1;
             }
-            checkPopup(e);
         }
+
 
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -99,9 +98,9 @@ public abstract class FileExplorer extends JPanel {
 
         void checkPopup(MouseEvent event) {
             if (event.isPopupTrigger()) {
-                FileExplorer.this.indexPopMenu = FileExplorer.this.list.locationToIndex(event.getPoint());
-                menu.show(FileExplorer.this, event.getX(), event.getY());
-
+                    int row = tree.getClosestRowForLocation(event.getX(), event.getY());
+                    tree.setSelectionRow(row);
+                    menu.show(FileExplorer.this, event.getX(), event.getY());
             }
         }
 
@@ -110,5 +109,9 @@ public abstract class FileExplorer extends JPanel {
             checkPopup(e);
         }
 
+
     }
+
+
+
 }
