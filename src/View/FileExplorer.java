@@ -1,21 +1,25 @@
 package View;
 
+import FTP.controllerFTP;
+
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FileExplorer extends JPanel {
-
+    controllerFTP pi = null;
     DefaultListModel<String> model;
     String path = "";
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
     JTree tree = new JTree();
-    private JMenuItem itemInfo, itemDelete, itemUpload;
+    private JMenuItem itemDelete;
+    private JMenuItem itemUpload;
 
     FileExplorer() {
 
@@ -43,13 +47,13 @@ public abstract class FileExplorer extends JPanel {
         this.model.clear();
     }
 
-    public abstract void setPath(String path);
+    public abstract void setPath(String path) throws IOException;
 
-    protected abstract void selected(String path);
+    protected abstract void selected(String path) throws IOException;
 
     protected abstract void createTree();
 
-    protected abstract void delete(String path);
+    protected abstract void delete(String path) throws IOException;
 
     void addListener(FileExplorerListener listener) {
         this.listeners.add(listener);
@@ -87,10 +91,20 @@ public abstract class FileExplorer extends JPanel {
                     assert selPath != null;
                     String curPath = String.valueOf(selPath.getLastPathComponent());
                     itemDelete.addActionListener(arg1 -> {
-                        delete(curPath);
+                        try {
+                            delete(curPath);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                         createTree();
                     });
-                    itemUpload.addActionListener(arg2 -> selected(curPath));
+                    itemUpload.addActionListener(arg2 -> {
+                        try {
+                            selected(curPath);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    });
 
                 }
             }
