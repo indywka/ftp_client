@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class FileExplorer extends JPanel {
 
     DefaultListModel<String> model;
-    String path = "";
+    String path = "C://Users//User//Desktop";
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
     private JTree tree = new JTree();
@@ -111,7 +111,7 @@ public abstract class FileExplorer extends JPanel {
 
     void createLocalTree() {
         tree.setModel(null);
-        File fileRoot = new File("C://Users//User//Desktop");
+        File fileRoot = new File(getCurrentPath());
         FileTreeModel modelOfTree = new FileTreeModel(fileRoot);
         tree.setModel(modelOfTree);
         FileExplorer.this.add(tree);
