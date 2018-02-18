@@ -57,9 +57,27 @@ public class controllerFTP {
         return file;
     }
 
-    public synchronized List<FTPFile> getFiles(String path) {
-        List<FTPFile> list;
-        list = new ArrayList<>();
+    public synchronized FTPFile getFile(String path) {
+        FTPFile file = null;
+
+        try {
+            if (command("MLST " + path).startsWith("250-")) {
+                String line = this.in.readLine();
+                file = parseLine(line.substring(4, line.length()));
+                file.exist = true;
+
+                notifyReceiveMsg(line);
+                notifyReceiveMsg(this.in.readLine());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
+    }
+
+    public synchronized ArrayList<FTPFile> getFiles(String path) {
+        ArrayList<FTPFile> list = new ArrayList<>();
 
         if (this.type != Type.A) setMode(Type.A);
         Socket sock = PASV();
@@ -214,6 +232,27 @@ public class controllerFTP {
 
     private void notifySendMsg(String msg) {
         for (controllerFTPListener listener : this.listeners) listener.sendMsg(msg);
+    }
+
+    public boolean delete(FTPFile file) {
+        try {
+            if (file.isDirectory()) {
+                List<FTPFile> list = getFiles(file.getAbsPath());
+
+                for (FTPFile oneFile : list) if (!delete(oneFile)) return false;
+
+                if (!command("RMD " + file.getAbsPath()).startsWith("250")) return false;
+            } else {
+                if (!command("DELE " + file.getAbsPath()).startsWith("250")) return false;
+            }
+
+            file.exist = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     private void notifyConnected() {
