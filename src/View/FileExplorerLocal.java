@@ -1,15 +1,24 @@
 package View;
 
 import java.io.File;
-import java.util.Date;
 
 public class FileExplorerLocal extends FileExplorer {
 
     FileExplorerLocal() {
-        createLocalTree();
+        createTree();
     }
 
     public void setPath(String path) {
+    }
+
+
+    @Override
+    protected void createTree() {
+        tree.setModel(null);
+        File fileRoot = new File("C://Users//User//Desktop");
+        FileTreeModel modelOfTree = new FileTreeModel(fileRoot);
+        tree.setModel(modelOfTree);
+        this.add(tree);
     }
 
     @Override
@@ -34,24 +43,7 @@ public class FileExplorerLocal extends FileExplorer {
             //noinspection ResultOfMethodCallIgnored
             file.delete();
             setPath(this.path);
-
         }
-
-    }
-
-
-    @Override
-    protected void info(String path) {
-        this.path = path;
-        File file = new File(path);
-        ShowInfo inf = new ShowInfo();
-        inf.setDir(file.getPath());
-        inf.setName(file.getName());
-        inf.setTypeFile(file.isDirectory() ? "dir" : "file");
-        inf.setSize(file.length());
-        inf.setDate(new Date(file.lastModified()));
-        inf.setLocationRelativeTo(this);
-        inf.setVisible(true);
     }
 
 

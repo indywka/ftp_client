@@ -40,6 +40,7 @@ public class FileExplorerFTP extends FileExplorer {
     }
 
     @Override
-    protected void info(String index) {
+    protected void createTree() {
+
     }
 }

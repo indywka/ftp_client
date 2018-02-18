@@ -5,17 +5,16 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FileExplorer extends JPanel {
 
     DefaultListModel<String> model;
-    String path = "C://Users//User//Desktop";
+    String path = "";
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
-    private JTree tree = new JTree();
+    JTree tree = new JTree();
     private JMenuItem itemInfo, itemDelete, itemUpload;
 
     FileExplorer() {
@@ -29,9 +28,6 @@ public abstract class FileExplorer extends JPanel {
 
         itemDelete = new JMenuItem("DELETE");
         this.menu.add(itemDelete);
-
-        itemInfo = new JMenuItem("INFO");
-        this.menu.add(itemInfo);
 
         itemUpload = new JMenuItem("UPLOAD");
         this.menu.add(itemUpload);
@@ -51,9 +47,9 @@ public abstract class FileExplorer extends JPanel {
 
     protected abstract void selected(String path);
 
-    protected abstract void delete(String path);
+    protected abstract void createTree();
 
-    protected abstract void info(String path);
+    protected abstract void delete(String path);
 
     void addListener(FileExplorerListener listener) {
         this.listeners.add(listener);
@@ -90,10 +86,9 @@ public abstract class FileExplorer extends JPanel {
                     TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
                     assert selPath != null;
                     String curPath = String.valueOf(selPath.getLastPathComponent());
-                    itemInfo.addActionListener(arg0 -> info(curPath));
                     itemDelete.addActionListener(arg1 -> {
                         delete(curPath);
-                        createLocalTree();
+                        createTree();
                     });
                     itemUpload.addActionListener(arg2 -> selected(curPath));
 
@@ -103,17 +98,6 @@ public abstract class FileExplorer extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
-
-
-    }
-
-    void createLocalTree() {
-        tree.setModel(null);
-        File fileRoot = new File(getCurrentPath());
-        FileTreeModel modelOfTree = new FileTreeModel(fileRoot);
-        tree.setModel(modelOfTree);
-        FileExplorer.this.add(tree);
     }
 }
