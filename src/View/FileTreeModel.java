@@ -16,6 +16,7 @@ class FileTreeModel implements TreeModel {
         return root;
     }
 
+
     public boolean isLeaf(Object node) {
         return ((File) node).isFile();
     }
