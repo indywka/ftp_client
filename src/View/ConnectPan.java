@@ -12,10 +12,10 @@ public class ConnectPan extends JPanel {
 
     private List<ConnectListener> listeners = new ArrayList<>();
 
-    private JTextField login = new JTextField();
-    private JPasswordField password = new JPasswordField();
-    private JTextField host = new JTextField();
-    private JTextField port = new JTextField();
+    private JTextField login = new JTextField("culturied");
+    private JPasswordField password = new JPasswordField("min4ik97");
+    private JTextField host = new JTextField("66.220.9.50");
+    private JTextField port = new JTextField("21");
     private JButton button = new JButton();
     private boolean enabled = true;
 
