@@ -4,13 +4,13 @@ import java.io.File;
 
 public class FileExplorerLocal extends FileExplorer {
 
+
     FileExplorerLocal() {
         createTree();
     }
 
     public void setPath(String path) {
     }
-
 
     @Override
     protected void createTree() {
@@ -40,7 +40,6 @@ public class FileExplorerLocal extends FileExplorer {
         File file = new File(path);
         String name = file.getName();
         if (!name.equals("..")) {
-            //noinspection ResultOfMethodCallIgnored
             file.delete();
             setPath(this.path);
         }
