@@ -4,7 +4,6 @@ import java.io.File;
 
 public class FileExplorerLocal extends FileExplorer {
 
-
     FileExplorerLocal() {
         createTree();
     }

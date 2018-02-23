@@ -25,10 +25,8 @@ public class FileExplorerFTP extends FileExplorer {
     @Override
     public void setPath(String path) throws IOException {
         this.path = path;
-//        getDir(this.path);
         buildTree("/", root);
         tree = new JTree(root);
-
         this.add(tree);
     }
 
@@ -49,7 +47,6 @@ public class FileExplorerFTP extends FileExplorer {
 
     void setPiFTP(controllerFTP pi) {
         this.pi = pi;
-        this.model.clear();
     }
 
     @Override

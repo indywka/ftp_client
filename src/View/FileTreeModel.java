@@ -6,6 +6,7 @@ import javax.swing.tree.TreePath;
 import java.io.File;
 
 class FileTreeModel implements TreeModel {
+
     private File root;
 
     FileTreeModel(File root) {
@@ -15,7 +16,6 @@ class FileTreeModel implements TreeModel {
     public Object getRoot() {
         return root;
     }
-
 
     public boolean isLeaf(Object node) {
         return ((File) node).isFile();
@@ -36,14 +36,14 @@ class FileTreeModel implements TreeModel {
     public int getIndexOfChild(Object parent, Object child) {
         String[] children = ((File) parent).list();
         if (children == null) return -1;
-        String childname = ((File) child).getName();
+        String childName = ((File) child).getName();
         for (int i = 0; i < children.length; i++) {
-            if (childname.equals(children[i])) return i;
+            if (childName.equals(children[i])) return i;
         }
         return -1;
     }
 
-    public void valueForPathChanged(TreePath path, Object newvalue) {
+    public void valueForPathChanged(TreePath path, Object newValue) {
     }
 
     public void addTreeModelListener(TreeModelListener l) {

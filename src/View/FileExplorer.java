@@ -13,7 +13,6 @@ import java.util.List;
 
 public abstract class FileExplorer extends JPanel {
     controllerFTP pi = null;
-    DefaultListModel<String> model;
     String path = "";
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
@@ -25,10 +24,6 @@ public abstract class FileExplorer extends JPanel {
 
         menu = new JPopupMenu();
         setLayout(new BorderLayout());
-        model = new DefaultListModel<>();
-        JList<String> list = new JList<>(this.model);
-        list.addMouseListener(new ListenMouse());
-        this.add(list);
 
         itemDelete = new JMenuItem("DELETE");
         this.menu.add(itemDelete);
@@ -44,7 +39,7 @@ public abstract class FileExplorer extends JPanel {
     }
 
     void clear() {
-        this.model.clear();
+//        this.model.clear();
     }
 
     public abstract void setPath(String path) throws IOException;

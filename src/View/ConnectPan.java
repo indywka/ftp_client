@@ -38,7 +38,7 @@ public class ConnectPan extends JPanel {
         this.port.addKeyListener(lst);
 
         this.button = new JButton("Соединиться");
-        button.setEnabled(false);
+        button.setEnabled(true);
         this.button.addMouseListener(new ConnListener());
         add(this.button);
 
