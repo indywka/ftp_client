@@ -5,7 +5,6 @@ import FTP.controllerFTP;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class FileExplorerFTP extends FileExplorer {
     }
 
     @Override
-    public void setPath(String path) throws IOException {
+    public void setPath(String path) {
         this.path = path;
         buildTree("/", root);
         tree = new JTree(root);
@@ -32,25 +31,23 @@ public class FileExplorerFTP extends FileExplorer {
 
     private List<String> getDir(String path) {
         this.path = path;
-//        tree.setModel(null);
         ArrayList<FTPFile> files = this.pi.getFiles(path);
         List<String> list = new ArrayList<>();
-        for (FTPFile file : files) {
-            list.add(file.getName());
+        if (files.size() != 0) {
+            for (FTPFile file : files) {
+                list.add(file.getName());
+            }
+            System.out.println(list);
         }
-        System.out.println(list);
         return list;
     }
-
-    // так, я получил список директорий: List<String> list.
-    //теперь надо обойти дерево, т.е.
 
     void setPiFTP(controllerFTP pi) {
         this.pi = pi;
     }
 
     @Override
-    protected void selected(String index) throws IOException {
+    protected void selected(String index) {
         String path = this.path;
         FTPFile file = this.pi.getFile(path);
 
@@ -60,7 +57,7 @@ public class FileExplorerFTP extends FileExplorer {
     }
 
     @Override
-    protected void delete(String path) throws IOException {
+    protected void delete(String path) {
         if (!path.equals("..")) {
             this.pi.delete(this.pi.getFile(path));
             setPath(this.path);
@@ -68,14 +65,14 @@ public class FileExplorerFTP extends FileExplorer {
 
     }
 
-    private void buildTree(String currentdir, DefaultMutableTreeNode model) {
+    private void buildTree(String currentDir, DefaultMutableTreeNode model) {
 
-        List<String> currentCraw = getDir(currentdir);
+        List<String> currentCraw = getDir(currentDir);
 
         for (String node : currentCraw) {
-            DefaultMutableTreeNode currentnode = new DefaultMutableTreeNode(node);
-            buildTree(currentdir + "/" + node, currentnode);
-            model.add(currentnode);
+            DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode(node);
+            buildTree(currentDir + "/" + node, currentNode);
+            model.add(currentNode);
         }
 
 
