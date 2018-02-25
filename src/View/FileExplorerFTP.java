@@ -32,7 +32,7 @@ public class FileExplorerFTP extends FileExplorer {
 
     private List<String> getDir(String path) {
         this.path = path;
-        tree.setModel(null);
+//        tree.setModel(null);
         ArrayList<FTPFile> files = this.pi.getFiles(path);
         List<String> list = new ArrayList<>();
         for (FTPFile file : files) {
@@ -68,15 +68,17 @@ public class FileExplorerFTP extends FileExplorer {
 
     }
 
-    private void buildTree(String currentdir, DefaultMutableTreeNode model) throws IOException {
+    private void buildTree(String currentdir, DefaultMutableTreeNode model) {
 
         List<String> currentCraw = getDir(currentdir);
 
         for (String node : currentCraw) {
             DefaultMutableTreeNode currentnode = new DefaultMutableTreeNode(node);
-//            buildTree(currentdir + "/" + node, currentnode);
+            buildTree(currentdir + "/" + node, currentnode);
             model.add(currentnode);
         }
+
+
     }
 
 }

@@ -35,12 +35,12 @@ public class controllerFTP {
         return true;
     }
 
-    private String getVal(String line) {
-        int indxF = line.indexOf("modify");
+    private String getVal(String line, String name) {
+        int indxF = line.indexOf(name);
         if (indxF == -1) return null;
         int indxL = line.indexOf(';', indxF);
 
-        return line.substring(indxF + "modify".length() + 1, indxL);
+        return line.substring(indxF + name.length() + 1, indxL);
     }
 
     private FTPFile parseLine(String line) {
@@ -48,11 +48,11 @@ public class controllerFTP {
         FTPFile file = new FTPFile();
 
         try {
-            file.date = parseDTF.parse(getVal(line));
+            file.date = parseDTF.parse(getVal(line, "modify"));
         } catch (ParseException e) {
             System.err.println(e.getMessage());
         }
-
+        file.type = getVal(line, "type");
         file.absPath = line.substring(line.lastIndexOf("; ") + 2, line.length());
         return file;
     }
