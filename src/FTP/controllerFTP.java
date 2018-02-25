@@ -125,6 +125,24 @@ public class controllerFTP {
         return out;
     }
 
+    public synchronized InputStream download(FTPFile file) {
+        InputStream in = null;
+        if (this.type != Type.I) if (!setMode(Type.I)) return in;
+        Socket sock = PASV();
+        if (sock == null) return null;
+
+        try {
+            String log = command("RETR " + file.getAbsPath());
+
+            if (log.startsWith("125") || log.startsWith("150") || log.startsWith("350"))
+                in = sock.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return in;
+    }
+
     private Socket PASV() {
         Socket sock = null;
         String log;
@@ -156,7 +174,7 @@ public class controllerFTP {
     }
 
     private synchronized String command(String cmd) throws IOException {
-        while (this.in.ready()) notifyReceiveMsg(this.in.readLine()); //secure clearing
+        while (this.in.ready()) notifyReceiveMsg(this.in.readLine());
         this.out.write(new String(cmd.getBytes(), "UTF-8") + "\r\n");
         this.out.flush();
         notifySendMsg(cmd);
