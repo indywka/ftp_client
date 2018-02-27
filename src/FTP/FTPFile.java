@@ -2,15 +2,16 @@ package FTP;
 
 import java.util.Date;
 
-
 public class FTPFile extends controllerFTP {
-    String absPath;
+    public String type;
+    protected String perm;
+    protected long size;
+    String absPath = "";
     Date date;
     boolean exist = false;
-    protected String type;
 
 
-    FTPFile() {
+    public FTPFile() {
     }
 
     public String getName() {
@@ -23,7 +24,7 @@ public class FTPFile extends controllerFTP {
     }
 
     public boolean isFile() {
-        return this.type.equals("File");
+        return this.type.equals("file");
     }
 
     public String getPath() {
@@ -31,11 +32,20 @@ public class FTPFile extends controllerFTP {
         return indx == -1 || indx == 0 ? "/" : this.absPath.substring(0, indx);
     }
 
+    public long size() {
+        return this.size;
+    }
+
+    public String getPerm() {
+        return this.perm;
+    }
+
     public String getType() {
         return this.type;
     }
 
     public String getAbsPath() {
+
         return this.absPath;
     }
 }

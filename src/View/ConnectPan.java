@@ -12,7 +12,7 @@ public class ConnectPan extends JPanel {
 
     private List<ConnectListener> listeners = new ArrayList<>();
 
-    private JTextField login = new JTextField("culturied");
+    private JTextField login = new JTextField("indywka");
     private JPasswordField password = new JPasswordField("min4ik97");
     private JTextField host = new JTextField("66.220.9.50");
     private JTextField port = new JTextField("21");

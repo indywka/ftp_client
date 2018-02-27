@@ -52,10 +52,16 @@ public class controllerFTP {
         } catch (ParseException e) {
             System.err.println(e.getMessage());
         }
+        file.perm = getVal(line, "perm");
+        file.type = getVal(line, "type");
+        if (file.type != null) {
+            if (file.type.contains("file")) file.size = Long.parseLong(getVal(line, "size"));
+        }
         file.type = getVal(line, "type");
         file.absPath = line.substring(line.lastIndexOf("; ") + 2, line.length());
         return file;
     }
+
 
     public synchronized FTPFile getFile(String path) {
         FTPFile file = null;
@@ -63,7 +69,7 @@ public class controllerFTP {
         try {
             if (command("MLST " + path).startsWith("250-")) {
                 String line = this.in.readLine();
-                file = parseLine(line.substring(4, line.length()));
+                file = parseLine(line.toLowerCase().substring(4, line.length()));
                 file.exist = true;
 
                 notifyReceiveMsg(line);

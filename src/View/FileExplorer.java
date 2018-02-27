@@ -14,9 +14,10 @@ import java.util.List;
 public abstract class FileExplorer extends JPanel {
     controllerFTP pi = null;
     String path = "";
+    JTree tree = new JTree();
+
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
-    JTree tree = new JTree();
     private JMenuItem itemDelete;
     private JMenuItem itemUpload;
 
@@ -31,15 +32,11 @@ public abstract class FileExplorer extends JPanel {
         itemUpload = new JMenuItem("UPLOAD");
         this.menu.add(itemUpload);
 
-        tree.addMouseListener(new ListenMouse());
+        tree.addMouseListener(new ListenMouseLocal());
     }
 
     String getCurrentPath() {
         return this.path;
-    }
-
-    void clear() {
-//        this.model.clear();
     }
 
     public abstract void setPath(String path) throws IOException;
@@ -58,20 +55,7 @@ public abstract class FileExplorer extends JPanel {
         for (FileExplorerListener listener : this.listeners) listener.selectedFile(path);
     }
 
-
-    private class ListenMouse extends MouseAdapter {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-        }
+    private class ListenMouseLocal extends MouseAdapter {
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -96,6 +80,7 @@ public abstract class FileExplorer extends JPanel {
                     itemUpload.addActionListener(arg2 -> {
                         try {
                             selected(curPath);
+                            System.out.println(curPath);
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
@@ -105,8 +90,6 @@ public abstract class FileExplorer extends JPanel {
             }
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
     }
+
 }

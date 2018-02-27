@@ -104,7 +104,7 @@ public class Display extends JFrame {
         @Override
         public void needDisconnect() {
             Display.this.expFTP.setPiFTP(null);
-            Display.this.expFTP.clear();
+            Display.this.expFTP.clearTree();
 
             if (Display.this.sock != null) {
                 try {
