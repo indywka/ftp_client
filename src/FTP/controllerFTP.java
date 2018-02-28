@@ -62,14 +62,13 @@ public class controllerFTP {
         return file;
     }
 
-
     public synchronized FTPFile getFile(String path) {
         FTPFile file = null;
 
         try {
             if (command("MLST " + path).startsWith("250-")) {
                 String line = this.in.readLine();
-                file = parseLine(line.toLowerCase().substring(4, line.length()));
+                file = parseLine(line.toLowerCase().substring(0, line.length()));
                 file.exist = true;
 
                 notifyReceiveMsg(line);

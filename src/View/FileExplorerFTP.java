@@ -16,7 +16,7 @@ import java.util.List;
 public class FileExplorerFTP extends FileExplorer implements TreeSelectionListener {
 
     String value = "/";
-    String name = "";
+
     private JTree treeFtp = new JTree();
 
     FileExplorerFTP() {
@@ -70,7 +70,14 @@ public class FileExplorerFTP extends FileExplorer implements TreeSelectionListen
 
     @Override
     protected void selected(String index) {
+//        String path = this.path;
+//        FTPFile file = this.pi.getFile(path);
+//
+//        if (file.isDirectory()) {
+//            setPath(file.getAbsPath());
+//        } else {
         notifySelectedFile(index);
+//        }
     }
 
     @Override
@@ -104,13 +111,13 @@ public class FileExplorerFTP extends FileExplorer implements TreeSelectionListen
         System.out.println("Путь к данным:\t" + value + "\t\t\t\tИмя файла(absPath):\t" + name);
         this.path = value;
         System.out.println("Текущий путь к чему-то после выбора чего-то (CURRENT PATH):\t" + this.value);
-//        delete(value);
-//        takeTheAbsPath(name);
+        selected(value);
     }
 
-    public String takeTheAbsPath(String name) {
-        return name;
-    }
+
+//    public String takeTheAbsPath(String name) {
+//        return name;
+//    }
 
 
 //    private class ListenMouseFtp extends MouseAdapter {

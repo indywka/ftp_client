@@ -15,7 +15,7 @@ public abstract class FileExplorer extends JPanel {
     controllerFTP pi = null;
     String path = "";
     JTree tree = new JTree();
-
+    String name = "";
     private List<FileExplorerListener> listeners = new ArrayList<>();
     private JPopupMenu menu;
     private JMenuItem itemDelete;

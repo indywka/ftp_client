@@ -1,5 +1,6 @@
 package View;
 
+import FTP.FTPFile;
 import FTP.TransferTask;
 import FTP.controllerFTP;
 
@@ -71,6 +72,24 @@ public class Display extends JFrame {
 
         @Override
         public void selectedFile(String path) {
+
+
+            //			FTPFile fileR=Display.this.pi.getFile("//TransferTask.java");
+            FTPFile fileR = Display.this.pi.getFile(path);
+
+            if (fileR == null) return;
+
+            File fileL = new File("C://Users/User/Desktop" + "/" + fileR.getName());
+            try {
+                TransferTask trf = new TransferTask(
+                        Display.this.pi.download(fileR),
+                        new FileOutputStream(fileL),
+                        fileR.size());
+                Thread th = new Thread(trf);
+                th.start();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
